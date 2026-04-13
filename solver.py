@@ -560,6 +560,15 @@ class OlympiadSolver:
             with ThreadPoolExecutor(max_workers=4) as ex:
                 list(ex.map(_read, files))
 
+        # Write a clean generation_config.json to override the model's built-in one
+        # (the model's generation_config.json references a speculative-decode draft model
+        #  which vLLM tries to resolve as a HF repo ID — this breaks on local paths)
+        import json as _json, tempfile as _tempfile
+        _gen_cfg_dir = "/kaggle/working/gen_cfg_override"
+        os.makedirs(_gen_cfg_dir, exist_ok=True)
+        with open(os.path.join(_gen_cfg_dir, "generation_config.json"), "w") as _f:
+            _json.dump({"transformers_version": "4.40.0"}, _f)
+
         cmd = [
             sys.executable, "-m", "vllm.entrypoints.openai.api_server",
             "--model",                  cfg.model_path,
@@ -576,7 +585,7 @@ class OlympiadSolver:
             "--async-scheduling",
             "--disable-log-stats",
             "--enable-prefix-caching",
-            "--generation-config",     "none",   # prevent speculative decode from generation_config.json
+            "--generation-config",      _gen_cfg_dir,  # point to our clean config
         ]
 
         self._log_file    = open("vllm_server.log", "w")
