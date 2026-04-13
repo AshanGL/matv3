@@ -424,7 +424,7 @@ def archive_run(
     with tarfile.open(archive_path, "w:gz") as tar:
         for path, arc_name in [
             (ckpt_dir,   "checkpoints"),
-            (db_dir,     "databases"),
+            (db_dir,     "knowledge_db"),
             (ret_db_dir, "ret_db"),
         ]:
             if not os.path.exists(path):
