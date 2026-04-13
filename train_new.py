@@ -131,7 +131,7 @@ def train_answer_type_classifier(
     train_df,
     val_df,
     encoder_name: str  = ENCODER_NAME,
-    epochs:       int  = 4,
+    epochs:       int  = 15,
     lr:           float = 2e-5,
     batch_size:   int  = 16,    # conservative for memory
     save_dir:     str  = None,
@@ -320,7 +320,7 @@ class TripletDataset(Dataset):
 def train_retrieval_encoder(
     train_df,
     encoder_name: str   = "sentence-transformers/all-MiniLM-L6-v2",
-    epochs:       int   = 3,
+    epochs:       int   = 10,
     lr:           float = 1e-5,
     batch_size:   int   = 32,
     margin:       float = 0.3,
@@ -503,7 +503,7 @@ def train_verify_scorer(
     train_df,
     val_df,
     encoder_name: str   = ENCODER_NAME,
-    epochs:       int   = 4,
+    epochs:       int   = 10,
     lr:           float = 1e-5,
     batch_size:   int   = 8,     # small — 384-token pairs are heavy
     save_dir:     str   = None,
@@ -602,7 +602,7 @@ def train_vote_ranker(
     train_df,
     val_df,
     encoder_name: str   = ENCODER_NAME,
-    epochs:       int   = 3,
+    epochs:       int   = 10,
     lr:           float = 1e-5,
     batch_size:   int   = 8,
     save_dir:     str   = None,
