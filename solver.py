@@ -575,6 +575,7 @@ class OlympiadSolver:
             "--async-scheduling",
             "--disable-log-stats",
             "--enable-prefix-caching",
+            "--disable-spec-decode",   # prevent vLLM from loading draft model from local path
         ]
 
         self._log_file    = open("vllm_server.log", "w")
