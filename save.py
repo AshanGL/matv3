@@ -49,7 +49,7 @@ import torch
 # Defaults
 # ─────────────────────────────────────────────────────────────────────────────
 
-DB_DIR      = "/kaggle/working/databases"
+DB_DIR      = "/kaggle/working/knowledge_db"
 CKPT_DIR    = "/kaggle/working/checkpoints"
 RET_DB_DIR  = "/kaggle/working/ret_db"
 STATE_FILE  = "/kaggle/working/pipeline_state.json"
