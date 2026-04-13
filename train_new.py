@@ -112,7 +112,7 @@ class AnswerTypeModel(nn.Module):
         from transformers import AutoModel
         self.encoder   = AutoModel.from_pretrained(encoder_name)
         # Enable gradient checkpointing to save ~40% GPU memory
-        self.encoder.gradient_checkpointing_enable()
+        self.encoder.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
         h              = self.encoder.config.hidden_size
         self.head      = nn.Sequential(
             nn.Dropout(0.1),
@@ -353,7 +353,7 @@ def train_retrieval_encoder(
         def __init__(self):
             super().__init__()
             self.encoder = AutoModel.from_pretrained(encoder_name)
-            self.encoder.gradient_checkpointing_enable()
+            self.encoder.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
         def _pool(self, ids, mask):
             out = self.encoder(input_ids=ids, attention_mask=mask)
             # Mean pooling (standard for sentence transformers)
@@ -523,7 +523,7 @@ def train_verify_scorer(
     tokenizer = AutoTokenizer.from_pretrained(encoder_name)
     model     = AutoModelForSequenceClassification.from_pretrained(
         encoder_name, num_labels=2).to(DEVICE)
-    model.base_model.gradient_checkpointing_enable()
+    model.base_model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
 
     train_items = _make_verify_items(train_df)
     val_items   = _make_verify_items(val_df)
@@ -660,7 +660,7 @@ def train_vote_ranker(
     tokenizer = AutoTokenizer.from_pretrained(encoder_name)
     model     = AutoModelForSequenceClassification.from_pretrained(
         encoder_name, num_labels=2).to(DEVICE)
-    model.base_model.gradient_checkpointing_enable()
+    model.base_model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
 
     train_items = _make_rank_items(train_df)
     val_items   = _make_rank_items(val_df)
